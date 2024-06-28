@@ -1,0 +1,35 @@
+import requests
+
+
+categories_url = 'https://fakestoreapi.com/products/categories'
+categories_response = requests.get(categories_url)
+categories = categories_response.json()
+
+
+print("Категории товаров:")
+for idx, category in enumerate(categories, 1):
+    print(f"{idx}. {category}")
+
+try:
+    
+    category_choice = int(input("Введите номер категории, которую хотите просмотреть: ")) - 1
+    selected_category = categories[category_choice]
+
+    
+    products_url = f'https://fakestoreapi.com/products/category/{selected_category}'
+    products_response = requests.get(products_url)
+    products = products_response.json()
+
+
+    print(f"\nТовары категории '{selected_category}':")
+    for product in products:
+        print(f"Название: {product['title']}")
+        print(f"Цена: ${product['price']}")
+        print(f"Описание: {product['description']}")
+        print("-" * 40)
+
+except IndexError:
+    print("Нету категории")
+except ValueError:
+    print("Некорректный ввод. Введите номер категории целым числом.")
+
